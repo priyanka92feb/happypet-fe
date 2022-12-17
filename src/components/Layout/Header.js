@@ -24,7 +24,7 @@ const Header = props => {
             {isLoggedIn && <button className={classes.button} onClick={profileHandler}>Profile</button>}
             {isLoggedIn && isAdmin 
                 && <HeadAdminButton className={classes.button} onClick={props.onShowAdmin}>Admin Panel</HeadAdminButton>}
-            {isLoggedIn && <HeadCartButton onClick={props.onShowCart}/>}
+            {isLoggedIn && !isAdmin  && <HeadCartButton onClick={props.onShowCart}/>}
         </header>
         <div className={classes['main-image']}>
             <img src={happypetsImage} alt ='happy pets lying around!'/>

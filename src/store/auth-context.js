@@ -21,6 +21,7 @@ export const AuthContextProvider = (props) => {
 
     const loginHandler = (data) => {
         setToken(data.token);
+        localStorage.setItem('token',token);
         var i;
         for(i=0;i<data.roles.length;i++) {
           console.log("Role - " + data.roles[i]);

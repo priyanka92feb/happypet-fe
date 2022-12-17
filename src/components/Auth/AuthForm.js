@@ -2,6 +2,7 @@ import { useState, useRef, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
 import { useHistory } from 'react-router-dom';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const AuthForm = () => {
   const history = useHistory();
@@ -10,6 +11,7 @@ const AuthForm = () => {
   const usernameInputRef = useRef();
   const [isLogin, setIsLogin] = useState(true);
   const authCtx = useContext(AuthContext);
+  const [password, setPassword] = useState('');
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -46,25 +48,27 @@ const AuthForm = () => {
           return res.json();
         } else {
           let errorMessage = 'Authentication Failed';
-          throw new Error(errorMessage);
+          alert(errorMessage);
         }
       }).then((data) => {
         console.log(data);
         authCtx.login(data);
         history.replace('/home')
 
-      }).catch((err) => {
-        alert(err.message);
+      }).catch((error) => {
+        console.error('Error:', error);
+        alert("server is down!!")   
       });
   };
-
+  
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor='userName'>Your Username</label>
-          <input type='userName' id='userName' required ref={usernameInputRef} />
+          <input type='userName' id='userName' required ref={usernameInputRef}
+          minLength={6} maxLength={20} />
         </div>
         {!isLogin && <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
@@ -72,8 +76,12 @@ const AuthForm = () => {
         </div>}
         <div className={classes.control}>
           <label htmlFor='password'>Your Password</label>
-          <input type='password' id='password' required ref={passwordInputRef} />
+          <input type='password' id='password' required ref={passwordInputRef} 
+            onChange={e => setPassword({ password: e.target.value })}/>
+            {!isLogin && <PasswordStrengthBar password={password} 
+            minLength={6} maxLength={100}/>}
         </div>
+
         <div className={classes.actions}>
           <button>{isLogin ? 'Login' : 'Create Account'}</button>
           <button

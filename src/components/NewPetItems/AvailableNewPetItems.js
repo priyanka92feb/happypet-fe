@@ -22,8 +22,12 @@ const AvailableNewPetItems = () => {
                     setNewPetItemsFromDb(data.allNewPetItems);
                     return data;
                 })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert("server is down!!")   
+                  });
             console.log(newPetItemsFromDb);
-        } catch (error) {
+        } catch (error){
             alert(error.message);
         }
     }, []);
