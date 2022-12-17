@@ -6,7 +6,7 @@ const AdminPetItem = (props) => {
   return (
     <li className={classes['cart-item']}>
       <div>
-        <h2>{props.itemName}</h2>
+        <h3>{props.itemName}</h3>
         <div className={classes.summary}>
           <span className={classes.price}>{price}</span>
           <span className={classes.price}>{props.quantity}</span>

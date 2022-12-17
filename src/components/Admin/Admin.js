@@ -2,9 +2,20 @@ import classes from './Admin.module.css';
 import Modal from '../UI/Modal';
 import AdminPetItem from '../Admin/AdminPetItem';
 import { useState, useEffect } from 'react';
+import AdminOrderItem from '../Admin/AdminOrderItem'
 
 
 const Admin = props => {
+    const dummyOrdersList = [{
+        "id": 13,
+        "totalAmount": 100,
+        "userName": "test11",
+    },
+    {
+        "id": 15,
+        "totalAmount": 200,
+        "userName": "test12",
+    }];
 
     const [newPetItemsFromDb, setNewPetItemsFromDb] = useState([]);
     useEffect(() => {
@@ -40,12 +51,25 @@ const Admin = props => {
                 />
             ))}
         </ul>);
+    const orderItems =
+    (<ul className={classes['cart-items']}>
+            {dummyOrdersList.map((item) => (
+                <AdminOrderItem key={item.id}
+                    id={item.id}
+                    totalAmount={item.totalAmount}
+                    date={item.orderDate}
+                    userName={item.userName}
+                />
+            ))}
+        </ul>);
     return (<Modal>
-        <h2>All Available Pet Items</h2>
-        {petItems}
         <div className={classes.actions}>
             <button className={classes['button--alt']} onClick={props.onClose}>Close</button>
         </div>
+        <h3>All Available Pet Items</h3>
+        {petItems}
+        <h3>All Customer Orders</h3>
+        {orderItems}
     </Modal>
     )
 
