@@ -19,7 +19,7 @@ const AuthForm = () => {
     event.preventDefault();
     const enteredUsername = usernameInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    if(!isLogin) {
+    if (!isLogin) {
       const enteredEmail = emailInputRef.current.value;
     }
 
@@ -45,12 +45,12 @@ const AuthForm = () => {
         if (res.ok) {
           return res.json();
         } else {
-            let errorMessage = 'Authentication Failed';
-            throw new Error(errorMessage);
+          let errorMessage = 'Authentication Failed';
+          throw new Error(errorMessage);
         }
       }).then((data) => {
         console.log(data);
-        authCtx.login(data.token);
+        authCtx.login(data);
         history.replace('/home')
 
       }).catch((err) => {

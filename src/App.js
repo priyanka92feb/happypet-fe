@@ -11,6 +11,7 @@ function App() {
 
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
+
   return (
     <Layout>
       <Switch>
