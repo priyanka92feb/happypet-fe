@@ -89,14 +89,13 @@ const AuthForm = () => {
         </div>
         {!isLogin && <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
-          <input type='email' id='email' required ref={emailInputRef} />
+          <input type='email' id='email' required ref={emailInputRef}  maxLength={50}/>
         </div>}
         <div className={classes.control}>
           <label htmlFor='password'>Your Password</label>
           <input type='password' id='password' required ref={passwordInputRef}
-            onChange={e => setPassword({ password: e.target.value })} />
-          {!isLogin && <PasswordStrengthBar password={password}
-            minLength={6} maxLength={100} />}
+            onChange={e => setPassword({ password: e.target.value })}
+            minLength={6} maxLength={100} />
         </div>
 
         <div className={classes.actions}>

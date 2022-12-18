@@ -6,6 +6,7 @@ import AuthContext from '../../../store/auth-context';
 const PetItemForm = props => {
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
+    const isAdmin = authCtx.isAdmin;
     const [amountIsValid, setAmountIsValid] = useState(true);
 
     const amountInputRef = useRef();
@@ -24,7 +25,7 @@ const PetItemForm = props => {
 
 return (
     <form className={classes.form} onSubmit={submitHandler}>
-        {isLoggedIn && <Input 
+        {isLoggedIn && !isAdmin && <Input 
             ref = {amountInputRef}
             label="Amount" 
             input={{
@@ -35,7 +36,7 @@ return (
             step: '1',
             defaultValue: '1'
         }}  />}
-        {isLoggedIn && <button>+ Add</button>}
+        {isLoggedIn && !isAdmin && <button>+ Add</button>}
         {!amountIsValid && <p>Please enter a valid amount (1-5).</p>}
     </form>
 );
