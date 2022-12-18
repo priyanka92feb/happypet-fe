@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 const AuthContext = React.createContext({
     token: '',
@@ -10,24 +10,28 @@ const AuthContext = React.createContext({
     logout: () => {
 
     }
-}); 
+});
 
 export const AuthContextProvider = (props) => {
     const [token, setToken] = useState(null);
     const userIsLoggedIn = !!token;
 
     const [isAdmin, setIsAdmin] = useState(false);
-    
+
 
     const loginHandler = (data) => {
         setToken(data.token);
-        localStorage.setItem('token',token);
+        localStorage.setItem('token', token);
         var i;
-        for(i=0;i<data.roles.length;i++) {
-          console.log("Role - " + data.roles[i]);
-          if(data.roles[i]==='ROLE_ADMIN') {
-            setIsAdmin(true);
-          }
+        if (data.roles === null) {
+            setIsAdmin(false);
+        } else {
+            for (i = 0; i < data.roles.length; i++) {
+                console.log("Role - " + data.roles[i]);
+                if (data.roles[i] === 'ROLE_ADMIN') {
+                    setIsAdmin(true);
+                }
+            }
         }
     };
     const logoutHandler = () => {
@@ -38,9 +42,9 @@ export const AuthContextProvider = (props) => {
     const contextValue = {
         token: token,
         isLoggedIn: userIsLoggedIn,
-        isAdmin : isAdmin,
+        isAdmin: isAdmin,
         login: loginHandler,
-        logout: logoutHandler, 
+        logout: logoutHandler,
 
     };
     return <AuthContext.Provider value={contextValue}>

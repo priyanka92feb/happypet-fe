@@ -21,8 +21,9 @@ const AuthForm = () => {
     event.preventDefault();
     const enteredUsername = usernameInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+    var enteredEmail = null;
     if (!isLogin) {
-      const enteredEmail = emailInputRef.current.value;
+      enteredEmail = emailInputRef.current.value;
     }
 
     let url;
@@ -37,7 +38,7 @@ const AuthForm = () => {
         method: 'POST',
         body: JSON.stringify({
           username: enteredUsername,
-          //email: enteredEmail,
+          email: enteredEmail,
           password: enteredPassword
         }),
         headers: {
@@ -47,20 +48,36 @@ const AuthForm = () => {
         if (res.ok) {
           return res.json();
         } else {
-          let errorMessage = 'Authentication Failed';
-          alert(errorMessage);
+          return Promise.reject(res);
         }
       }).then((data) => {
         console.log(data);
-        authCtx.login(data);
-        history.replace('/home')
+        if(isLogin) {
+          authCtx.login(data);
+          history.replace('/home')
+        }
+        else {
+          alert("Account Creation Succesful, please login using credentials")
+          window.location.reload(true);
+        }
 
       }).catch((error) => {
-        console.error('Error:', error);
-        alert("server is down!!")   
+        if (error.status === 400 || error.status === 404) {
+          if (isLogin) {
+            let errorMessage = 'Authentication Failed';
+            alert(errorMessage);
+          }
+          else {
+            let errorMessage = 'Account Creation Failed';
+            alert(errorMessage + error.statusText);
+          }
+        }
+        else {
+          alert("Something went wrong, please try again later");
+        }
       });
   };
-  
+
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
@@ -68,7 +85,7 @@ const AuthForm = () => {
         <div className={classes.control}>
           <label htmlFor='userName'>Your Username</label>
           <input type='userName' id='userName' required ref={usernameInputRef}
-          minLength={6} maxLength={20} />
+            minLength={6} maxLength={20} />
         </div>
         {!isLogin && <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
@@ -76,10 +93,10 @@ const AuthForm = () => {
         </div>}
         <div className={classes.control}>
           <label htmlFor='password'>Your Password</label>
-          <input type='password' id='password' required ref={passwordInputRef} 
-            onChange={e => setPassword({ password: e.target.value })}/>
-            {!isLogin && <PasswordStrengthBar password={password} 
-            minLength={6} maxLength={100}/>}
+          <input type='password' id='password' required ref={passwordInputRef}
+            onChange={e => setPassword({ password: e.target.value })} />
+          {!isLogin && <PasswordStrengthBar password={password}
+            minLength={6} maxLength={100} />}
         </div>
 
         <div className={classes.actions}>
